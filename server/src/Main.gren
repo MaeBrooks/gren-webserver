@@ -1,0 +1,19 @@
+module Main exposing ( main )
+-- import Node exposing ( Environment )
+
+import Prettynice.SimpleRouter as Prettynice
+import Router.Core as Router
+
+
+main : Prettynice.Program
+main =
+    Prettynice.defineProgram
+        { init =
+            \env ->
+                Prettynice.startProgram
+                    { host = "127.0.0.1"
+                    , port_ = 3000
+                    , env = env
+                    }
+        , router = Router.init
+        }

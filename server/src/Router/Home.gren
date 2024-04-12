@@ -1,0 +1,36 @@
+module Router.Home exposing ( serveHomePage )
+
+import Gen.Components.Counter
+import Prettynice.Request exposing ( Request )
+import Prettynice.Response as Response exposing ( Response )
+import Transmutable.Html as H exposing ( Html )
+import Transmutable.Html.Attributes as A
+import Types.Handler as Handler
+
+
+serveHomePage : Handler.T msg
+serveHomePage _ =
+    Response.sendHtml
+        { title = "My Website"
+        , head =
+            [ H.link
+                [ A.rel "stylesheet"
+                , A.href "/styles.css"
+                ]
+            ]
+        , body =
+            [ H.h1
+                []
+                [ H.text "Welcome to my website!"
+                ]
+            , H.p
+                []
+                [ H.text "I made this counter just for you."
+                ]
+                -- This is generated during the prettynice build step from the
+                -- component defined in `client/src/Counter.gren`.
+            , Gen.Components.Counter.init
+                { start = 0
+                }
+            ]
+        }
