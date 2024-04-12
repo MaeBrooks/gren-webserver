@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "gren-lang": "^0.3.0",
-    "prettynice": "^1.0.0"
+    "prettynice": "^1.0.0",
+    "mongodb": "^6.5.0",
+    "puppeteer": "^22.3.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "happy-dom": "^13.6.2"
   }
 }
