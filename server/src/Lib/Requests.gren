@@ -1,0 +1,58 @@
+module Lib.Requests exposing ( T, Request, init, add, pull )
+
+import Lib.Pretty as Pretty
+
+
+type alias T =
+    Array Request
+
+
+init : T
+init =
+    []
+
+
+type alias Request =
+    { id : Int
+    , req : Pretty.Req
+    , res : Pretty.Res
+    }
+
+
+add :
+    Pretty.Req
+    -> Pretty.Res
+    -> T
+    -> { requests : T
+       , request : Request
+       }
+add req res self =
+    let
+        request =
+            { id = Array.length self
+            , req = req
+            , res = res
+            }
+
+        requests =
+            Array.pushFirst request self
+    in
+    { requests = requests
+    , request = request
+    }
+
+
+pull :
+    Int
+    -> T
+    -> { requests : T
+       , request : Maybe Request
+       }
+pull id self =
+    let
+        { trues, falses } =
+            Array.partition (\request -> request.id == id) self
+    in
+    { requests = falses
+    , request = Array.get 0 trues
+    }

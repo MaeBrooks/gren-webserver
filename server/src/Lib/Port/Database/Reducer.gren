@@ -1,14 +1,14 @@
 module Lib.Port.Database.Reducer exposing ( handle )
 
-import Json.Encode as E
 import Lib.Model as Model
 import Lib.Port.Database.Msg as DatabaseMsg
 import Lib.Pretty as Pretty
+import Lib.Reducer.Utils as ReducerUtils
 import Lib.Router.Error
 import Lib.Updated as Updated
 
 
-handle : DatabaseMsg.T -> Model.T -> Updated.T
+handle : DatabaseMsg.T -> Model.T -> Updated.T msg
 handle msg model =
     case msg of
         DatabaseMsg.ConnectionFailure { ctx, status, reason } ->
@@ -19,9 +19,7 @@ handle msg model =
                     }
 
                 Just ctx_ ->
-                    Model.useRequest
-                        ctx_
-                        model
+                    ReducerUtils.usingRequest
                         (\{ res } ->
                             res
                                 |> Pretty.setStatus status
@@ -32,3 +30,5 @@ handle msg model =
                                             }
                                         )
                         )
+                        ctx_
+                        model

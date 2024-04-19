@@ -1,124 +1,21 @@
-module Lib.Model exposing ( T, init, storeRequest, useRequest )
+module Lib.Model exposing ( T, init, setRequests)
 
 import Lib.Ctx as Ctx
 import Lib.Pretty as Pretty
+import Lib.Requests as Requests
+
 
 type alias T =
-    { strains : Array String
-    , internal : Internal
+    { requests : Requests.T
     }
 
 
 init : T
 init =
-    { strains = []
-    , internal =
-        { requests = []
-        }
+    { requests = Requests.init
     }
 
 
-type alias Internal =
-    { requests : Array StoredInternalRequest
-    }
-
-
-type alias StoredInternalRequest =
-    { id : Int
-    , req : Pretty.Req
-    , res : Pretty.Res
-    }
-
-
-setInternalRequests : Array StoredInternalRequest -> Internal -> Internal
-setInternalRequests requests internal =
-    { internal | requests = requests }
-
-
-storeInternalRequest :
-    Pretty.Req
-    -> Pretty.Res
-    -> Internal
-    -> { internal : Internal
-       , stored : StoredInternalRequest
-       }
-storeInternalRequest req res internal =
-    let
-        stored =
-            { id = Array.length internal.requests
-            , req = req
-            , res = res
-            }
-    in
-    { internal = { internal | requests = Array.pushFirst stored internal.requests }
-    , stored = stored
-    }
-
-
-pullRequest :
-    Ctx.T
-    -> T
-    -> { model : T
-       , request : Maybe StoredInternalRequest
-       }
-pullRequest ctx model =
-    let
-        { trues, falses } =
-            Array.partition (\x -> x.id == ctx.id) model.internal.requests
-    in
-    { request = Array.get 0 trues
-    , model = { model | internal = setInternalRequests falses model.internal }
-    }
-
-
-storeRequest :
-    Pretty.Req
-    -> Pretty.Res
-    -> T
-    -> { ctx : Ctx.T
-       , model : T
-       }
-storeRequest req res model =
-    let
-        { internal, stored } =
-            storeInternalRequest req res model.internal
-    in
-    { ctx = Ctx.new stored.id
-    , model = { model | internal = internal }
-    }
-
-
-useRequest :
-    Ctx.T
-    -> T
-    -> ({ req : Pretty.Req
-        , res : Pretty.Res
-        }
-        -> Cmd msg
-       )
-    -> { model : T
-       , command : Cmd msg
-       }
-useRequest ctx model callback =
-    let
-        { trues, falses } =
-            Array.partition (\x -> x.id == ctx.id) model.internal.requests
-
-        request =
-            Array.get 0 trues
-
-        model_ =
-            { model | internal = setInternalRequests falses model.internal }
-    in
-    { model = model_
-    , command =
-        case request of
-            Nothing ->
-                Cmd.none
-
-            Just { req, res } ->
-                callback
-                    { req = req
-                    , res = res
-                    }
-    }
+setRequests : Requests.T -> T -> T
+setRequests requests self =
+    { self | requests = requests }

@@ -4,7 +4,7 @@ import Lib.Model
 import Lib.Msg
 
 
-type alias T =
+type alias T msg =
     { model : Lib.Model.T
-    , command : Cmd Lib.Msg.T
+    , command : Cmd msg
     }

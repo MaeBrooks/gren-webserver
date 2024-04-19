@@ -1,20 +1,10 @@
 module Lib.Router.Strains exposing ( getAllStrains )
 
-import Lib.Ctx as Ctx
-import Lib.Model as Model
-import Lib.Port.Out
 import Lib.Port.Strains.ReadAll.Port as ReadAllStrainsPort
-import Lib.Pretty as Pretty
-import Lib.Subscribe as Subscribe
-import Lib.Updated as Updated
+import Lib.Reducer.Types as ReducerTypes
+import Lib.Reducer.Utils as ReducerUtils
 
 
-getAllStrains : Model.T -> Pretty.Req -> Pretty.Res -> Updated.T
-getAllStrains initialModel req res =
-    let
-        { ctx, model } =
-            Model.storeRequest req res initialModel
-    in
-    { model = model
-    , command = ReadAllStrainsPort.get ctx
-    }
+getAllStrains : ReducerTypes.EndpointHandler msg
+getAllStrains =
+    ReducerUtils.sendCommandWithCtx ReadAllStrainsPort.get

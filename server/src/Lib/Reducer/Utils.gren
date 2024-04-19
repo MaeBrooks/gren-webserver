@@ -1,0 +1,40 @@
+module Lib.Reducer.Utils exposing ( sendCommandWithCtx, usingRequest )
+
+import Lib.Ctx as Ctx
+import Lib.Model as Model
+import Lib.Msg as Msg
+import Lib.Pretty as Pretty
+import Lib.Reducer.Types as ReducerTypes
+import Lib.Requests as Requests
+import Lib.Updated as Updated
+
+
+sendCommandWithCtx : (Ctx.T -> Cmd msg) -> ReducerTypes.EndpointHandler msg
+sendCommandWithCtx send req res model =
+    let
+        { requests, request } =
+            Requests.add req res model.requests
+    in
+    { model = Model.setRequests requests model
+    , command =
+        send
+            <| Ctx.new request.id
+    }
+
+
+usingRequest : (Requests.Request -> Cmd msg) -> Ctx.T -> Model.T -> Updated.T msg
+usingRequest use ctx model =
+    let
+        { requests, request } =
+            Requests.pull ctx.id model.requests
+    in
+    case request of
+        Nothing ->
+            { model = model
+            , command = Cmd.none
+            }
+
+        Just req ->
+            { model = Model.setRequests requests model
+            , command = use req
+            }

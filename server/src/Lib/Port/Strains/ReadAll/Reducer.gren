@@ -7,15 +7,14 @@ import Lib.Pretty as Pretty
 import Lib.Router.Error
 import Lib.Strain as Strain
 import Lib.Updated as Updated
+import Lib.Reducer.Utils as ReducerUtils
 
 
-handle : Msg.T -> Model.T -> Updated.T
-handle msg model_ =
+handle : Msg.T -> Model.T -> Updated.T msg
+handle msg model =
     case msg of
         Msg.Failure { ctx, status, reason } ->
-            Model.useRequest
-                ctx
-                model_
+            ReducerUtils.usingRequest
                 (\{ res } ->
                     res
                         |> Pretty.setStatus status
@@ -26,13 +25,15 @@ handle msg model_ =
                                     }
                                 )
                 )
+                ctx
+                model
 
         Msg.Success { ctx, strains } ->
-            Model.useRequest
-                ctx
-                model_
+            ReducerUtils.usingRequest
                 (\{ res } ->
                     res
                         |> Pretty.setStatus 200
                         |> Pretty.sendJson (E.array Strain.encode strains)
                 )
+                ctx
+                model

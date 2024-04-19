@@ -1,5 +1,6 @@
 module Lib.Reducer exposing ( handle )
 
+import Lib.Ctx as Ctx
 import Lib.Model as Model
 import Lib.Msg as Msg
 import Lib.Port.Reducer as PortReducer
@@ -7,7 +8,7 @@ import Lib.Router.Reducer as RouterReducer
 import Lib.Updated as Updated
 
 
-handle : Msg.T -> Model.T -> Updated.T
+handle : Msg.T -> Model.T -> Updated.T msg
 handle msg model =
     case msg of
         Msg.Noop ->

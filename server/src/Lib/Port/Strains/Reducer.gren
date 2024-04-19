@@ -6,7 +6,7 @@ import Lib.Port.Strains.ReadAll.Reducer as ReadAllReducer
 import Lib.Updated as Updated
 
 
-handle : StrainsMsg.T -> Model.T -> Updated.T
+handle : StrainsMsg.T -> Model.T -> Updated.T msg
 handle msg model =
     case msg of
         StrainsMsg.ForReadAll msg_ ->

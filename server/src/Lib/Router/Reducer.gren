@@ -1,13 +1,12 @@
 module Lib.Router.Reducer exposing ( handle )
 
-import Lib.Model as Model
 import Lib.Pretty as Pretty
+import Lib.Reducer.Types as ReducerTypes
 import Lib.Router.Home
 import Lib.Router.Strains
-import Lib.Updated as Updated
 
 
-handle : Pretty.Req -> Pretty.Res -> Model.T -> Updated.T
+handle : ReducerTypes.EndpointHandler msg
 handle req res model =
     case req.path of
         -- Root path: /
@@ -17,7 +16,7 @@ handle req res model =
             }
 
         [ "strains" ] ->
-            Lib.Router.Strains.getAllStrains model req res
+            Lib.Router.Strains.getAllStrains req res model
 
         _ ->
             { model = model

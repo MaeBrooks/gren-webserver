@@ -1,0 +1,9 @@
+module Lib.Reducer.Types exposing ( EndpointHandler )
+
+import Lib.Model as Model
+import Lib.Pretty as Pretty
+import Lib.Updated as Updated
+
+
+type alias EndpointHandler msg =
+    Pretty.Req -> Pretty.Res -> Model.T -> Updated.T msg
