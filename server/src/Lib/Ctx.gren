@@ -1,0 +1,23 @@
+module Lib.Ctx exposing ( T, new, encode )
+
+import Json.Encode as E
+
+
+type alias T =
+    { id : Int
+    }
+
+
+new : Int -> T
+new id =
+    { id = id
+    }
+
+
+encode : T -> E.Value
+encode ctx =
+    E.object
+        [ { key = "id"
+          , value = E.int ctx.id
+          }
+        ]

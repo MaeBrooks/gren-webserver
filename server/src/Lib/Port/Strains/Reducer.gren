@@ -1,0 +1,13 @@
+module Lib.Port.Strains.Reducer exposing ( handle )
+
+import Lib.Model as Model
+import Lib.Port.Strains.Msg as StrainsMsg
+import Lib.Port.Strains.ReadAll.Reducer as ReadAllReducer
+import Lib.Updated as Updated
+
+
+handle : StrainsMsg.T -> Model.T -> Updated.T
+handle msg model =
+    case msg of
+        StrainsMsg.ForReadAll msg_ ->
+            ReadAllReducer.handle msg_ model

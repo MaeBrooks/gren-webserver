@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - db-data:/data/db
+
+  api:
+    depends_on:
+      - mongo
+    build: .
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - 3000:3000
+      # - "$NODE_LOCAL_PORT:$NODE_DOCKER_PORT"
+    environment:
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - PORT=$NODE_DOCKER_PORT
+    stdin_open: true
+    tty: true
+
+volumes:
+  db-data:

@@ -1,0 +1,22 @@
+module Lib.Reducer exposing ( handle )
+
+import Lib.Model as Model
+import Lib.Msg as Msg
+import Lib.Port.Reducer as PortReducer
+import Lib.Router.Reducer as RouterReducer
+import Lib.Updated as Updated
+
+
+handle : Msg.T -> Model.T -> Updated.T
+handle msg model =
+    case msg of
+        Msg.Noop ->
+            { model = model
+            , command = Cmd.none
+            }
+
+        Msg.ForRouter req res ->
+            RouterReducer.handle req res model
+
+        Msg.ForPort msg_ ->
+            PortReducer.handle msg_ model

@@ -1,0 +1,9 @@
+module App exposing ( T )
+
+import Lib.Model
+import Lib.Msg
+
+type alias T =
+    { model : Lib.Model.T
+    , command : Cmd Lib.Msg.T
+    }

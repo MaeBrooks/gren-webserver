@@ -1,0 +1,45 @@
+module Lib.Pretty exposing ( Req, Res, Program, Init, defineProgram, startProgram, sendHtml, sendText, sendJson, setStatus )
+
+import Prettynice
+import Prettynice.Request exposing ( Request )
+import Prettynice.Response exposing ( Response )
+
+
+type alias Program model msg =
+    Prettynice.Program model msg
+
+
+type alias Init model msg =
+    Prettynice.Init model msg
+
+
+type alias Req =
+    Request
+
+
+type alias Res =
+    Response
+
+
+defineProgram =
+    Prettynice.defineProgram
+
+
+startProgram =
+    Prettynice.startProgram
+
+
+sendHtml =
+    Prettynice.Response.sendHtml
+
+
+sendText =
+    Prettynice.Response.sendText
+
+
+sendJson =
+    Prettynice.Response.sendJson
+
+
+setStatus =
+    Prettynice.Response.setStatus

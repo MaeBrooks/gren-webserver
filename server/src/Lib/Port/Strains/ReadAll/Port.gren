@@ -1,0 +1,46 @@
+port module Lib.Port.Strains.ReadAll.Port exposing ( get, onSuccess, onFailure )
+
+import Json.Encode as E
+import Lib.Ctx as Ctx
+import Lib.Strain as Strain
+
+
+port strainsReadAll : E.Value -> Cmd msg
+
+
+port strainsReadAllSuccess :
+    ({ ctx : Ctx.T
+     , strains : Array Strain.T
+     }
+     -> msg
+    )
+    -> Sub msg
+
+
+port strainsReadAllFailure :
+    ({ ctx : Ctx.T
+     , status : Int
+     , reason : String
+     }
+     -> msg
+    )
+    -> Sub msg
+
+
+get : Ctx.T -> Cmd msg
+get ctx =
+    strainsReadAll
+        (E.object
+            [ { key = "ctx"
+              , value = Ctx.encode ctx
+              }
+            ]
+        )
+
+
+onSuccess =
+    strainsReadAllSuccess
+
+
+onFailure =
+    strainsReadAllFailure

@@ -1,0 +1,7 @@
+module Lib.Port.Strains.Msg exposing ( T(..) )
+
+import Lib.Port.Strains.ReadAll.Msg as ReadAllMsg
+
+
+type T
+    = ForReadAll ReadAllMsg.T

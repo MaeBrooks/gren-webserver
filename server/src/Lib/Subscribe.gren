@@ -1,0 +1,10 @@
+module Lib.Subscribe exposing ( subscriptions )
+
+import Lib.Msg as Msg
+import Lib.Port.In as Ports
+import Lib.Model as Model
+
+
+subscriptions : Model.T -> Sub Msg.T
+subscriptions =
+    Ports.subscribe

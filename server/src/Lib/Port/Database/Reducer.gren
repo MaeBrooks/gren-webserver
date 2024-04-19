@@ -1,0 +1,34 @@
+module Lib.Port.Database.Reducer exposing ( handle )
+
+import Json.Encode as E
+import Lib.Model as Model
+import Lib.Port.Database.Msg as DatabaseMsg
+import Lib.Pretty as Pretty
+import Lib.Router.Error
+import Lib.Updated as Updated
+
+
+handle : DatabaseMsg.T -> Model.T -> Updated.T
+handle msg model =
+    case msg of
+        DatabaseMsg.ConnectionFailure { ctx, status, reason } ->
+            case ctx of
+                Nothing ->
+                    { model = model
+                    , command = Cmd.none
+                    }
+
+                Just ctx_ ->
+                    Model.useRequest
+                        ctx_
+                        model
+                        (\{ res } ->
+                            res
+                                |> Pretty.setStatus status
+                                |> Pretty.sendJson
+                                        (Lib.Router.Error.encode
+                                            { status = status
+                                            , error = reason
+                                            }
+                                        )
+                        )

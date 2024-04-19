@@ -1,0 +1,11 @@
+module Lib.Port.Database.Msg exposing ( T(..) )
+
+import Lib.Ctx as Ctx
+
+
+type T
+    = ConnectionFailure
+        { ctx : Maybe Ctx.T
+        , status : Int
+        , reason : String
+        }

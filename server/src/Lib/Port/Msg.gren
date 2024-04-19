@@ -1,0 +1,9 @@
+module Lib.Port.Msg exposing ( T(..) )
+
+import Lib.Port.Database.Msg as DatabaseMsg
+import Lib.Port.Strains.Msg as StrainsMsg
+
+
+type T
+    = ForStrains StrainsMsg.T
+    | ForDatabase DatabaseMsg.T

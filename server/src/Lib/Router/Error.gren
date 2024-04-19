@@ -1,0 +1,21 @@
+module Lib.Router.Error exposing ( T, encode )
+
+import Json.Encode as E
+
+
+type alias T =
+    { status : Int
+    , error : String
+    }
+
+
+encode : T -> E.Value
+encode e =
+    E.object
+        [ { key = "status"
+          , value = E.int e.status
+          }
+        , { key = "error"
+          , value = E.string e.error
+          }
+        ]

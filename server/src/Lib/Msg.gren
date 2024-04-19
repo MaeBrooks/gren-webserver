@@ -1,0 +1,10 @@
+module Lib.Msg exposing ( T(..) )
+
+import Lib.Port.Msg as PortMsg
+import Lib.Pretty as Pretty
+
+
+type T
+    = Noop
+    | ForRouter Pretty.Req Pretty.Res
+    | ForPort PortMsg.T

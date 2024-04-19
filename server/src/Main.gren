@@ -1,19 +1,28 @@
 module Main exposing ( main )
--- import Node exposing ( Environment )
 
-import Prettynice.SimpleRouter as Prettynice
-import Router.Core as Router
+import Lib.Model as Model
+import Lib.Msg as Msg
+import Lib.Pretty as Pretty
+import Lib.Reducer as Reducer
+import Lib.Subscribe as Subscribe
+import Node exposing ( Environment )
 
 
-main : Prettynice.Program
+main : Pretty.Program Model.T Msg.T
 main =
-    Prettynice.defineProgram
-        { init =
-            \env ->
-                Prettynice.startProgram
-                    { host = "127.0.0.1"
-                    , port_ = 3000
-                    , env = env
-                    }
-        , router = Router.init
+    Pretty.defineProgram
+        { init = init
+        , subscriptions = Subscribe.subscriptions
+        , update = Reducer.handle
+        , onRequest = Msg.ForRouter
+        }
+
+
+init : Environment -> Pretty.Init Model.T Msg.T
+init env =
+    Pretty.startProgram
+        { host = "0.0.0.0"
+        , port_ = 3000
+        , env = env
+        , model = Model.init
         }

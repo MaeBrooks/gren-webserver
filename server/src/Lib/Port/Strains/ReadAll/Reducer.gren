@@ -1,0 +1,38 @@
+module Lib.Port.Strains.ReadAll.Reducer exposing ( handle )
+
+import Json.Encode as E
+import Lib.Model as Model
+import Lib.Port.Strains.ReadAll.Msg as Msg
+import Lib.Pretty as Pretty
+import Lib.Router.Error
+import Lib.Strain as Strain
+import Lib.Updated as Updated
+
+
+handle : Msg.T -> Model.T -> Updated.T
+handle msg model_ =
+    case msg of
+        Msg.Failure { ctx, status, reason } ->
+            Model.useRequest
+                ctx
+                model_
+                (\{ res } ->
+                    res
+                        |> Pretty.setStatus status
+                        |> Pretty.sendJson
+                                (Lib.Router.Error.encode
+                                    { status = status
+                                    , error = reason
+                                    }
+                                )
+                )
+
+        Msg.Success { ctx, strains } ->
+            Model.useRequest
+                ctx
+                model_
+                (\{ res } ->
+                    res
+                        |> Pretty.setStatus 200
+                        |> Pretty.sendJson (E.array Strain.encode strains)
+                )

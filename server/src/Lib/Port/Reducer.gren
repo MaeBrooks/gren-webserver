@@ -1,0 +1,17 @@
+module Lib.Port.Reducer exposing ( handle )
+
+import Lib.Model as Model
+import Lib.Port.Database.Reducer as DatabaseReducer
+import Lib.Port.Msg as PortMsg
+import Lib.Port.Strains.Reducer as StrainsReducer
+import Lib.Updated as Updated
+
+
+handle : PortMsg.T -> Model.T -> Updated.T
+handle msg model =
+    case msg of
+        PortMsg.ForStrains msg_ ->
+            StrainsReducer.handle msg_ model
+
+        PortMsg.ForDatabase msg_ ->
+            DatabaseReducer.handle msg_ model

@@ -1,0 +1,16 @@
+module Lib.Port.Strains.ReadAll.Msg exposing ( T(..) )
+
+import Lib.Ctx as Ctx
+import Lib.Strain as Strain
+
+
+type T
+    = Success
+        { ctx : Ctx.T
+        , strains : Array Strain.T
+        }
+    | Failure
+        { ctx : Ctx.T
+        , status : Int
+        , reason : String
+        }

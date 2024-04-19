@@ -1,0 +1,28 @@
+module Lib.Router.Reducer exposing ( handle )
+
+import Lib.Model as Model
+import Lib.Pretty as Pretty
+import Lib.Router.Home
+import Lib.Router.Strains
+import Lib.Updated as Updated
+
+
+handle : Pretty.Req -> Pretty.Res -> Model.T -> Updated.T
+handle req res model =
+    case req.path of
+        -- Root path: /
+        [] ->
+            { model = model
+            , command = Lib.Router.Home.html req res
+            }
+
+        [ "strains" ] ->
+            Lib.Router.Strains.getAllStrains model req res
+
+        _ ->
+            { model = model
+            , command =
+                res
+                    |> Pretty.setStatus 404
+                    |> Pretty.sendText "Not found"
+            }

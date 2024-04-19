@@ -1,7 +1,0 @@
-module Types.Handler exposing ( T )
-
-import Prettynice.Request exposing ( Request )
-import Prettynice.Response as Response exposing ( Response )
-
-type alias T msg
-    = Request -> Response -> Cmd msg

@@ -1,0 +1,21 @@
+module Lib.Strain exposing ( T, encode )
+
+import Json.Encode as E
+
+
+type alias T =
+    { id : String
+    , name : String
+    }
+
+
+encode : T -> E.Value
+encode strain =
+    E.object
+        [ { key = "id"
+          , value = E.string strain.id
+          }
+        , { key = "name"
+          , value = E.string strain.name
+          }
+        ]

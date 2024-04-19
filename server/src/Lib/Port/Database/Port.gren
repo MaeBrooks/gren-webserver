@@ -1,0 +1,17 @@
+port module Lib.Port.Database.Port exposing ( onConnectionFailure )
+
+import Lib.Ctx as Ctx
+
+
+port databaseOnConnectionFailure :
+    ({ ctx : Maybe Ctx.T
+     , status : Int
+     , reason : String
+     }
+     -> msg
+    )
+    -> Sub msg
+
+
+onConnectionFailure =
+    databaseOnConnectionFailure

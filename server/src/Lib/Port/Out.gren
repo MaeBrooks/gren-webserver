@@ -1,0 +1,6 @@
+port module Lib.Port.Out exposing ( print )
+
+import Json.Encode as E
+
+
+port print : String -> Cmd msg

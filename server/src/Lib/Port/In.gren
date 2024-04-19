@@ -1,0 +1,20 @@
+module Lib.Port.In exposing ( subscribe )
+
+import Lib.Model as Model
+import Lib.Msg as Msg
+import Lib.Port.Database.Msg as DatabaseMsg
+import Lib.Port.Database.Port as DatabasePort
+import Lib.Port.Msg as PortMsg
+import Lib.Port.Strains.Msg as StrainsMsg
+import Lib.Port.Strains.ReadAll.Msg as StrainsReadAllMsg
+import Lib.Port.Strains.ReadAll.Port as StrainsReadAllPort
+
+
+subscribe : Model.T -> Sub Msg.T
+subscribe model =
+    Sub.batch
+        [ StrainsReadAllPort.onSuccess (\args -> Msg.ForPort (PortMsg.ForStrains (StrainsMsg.ForReadAll (StrainsReadAllMsg.Success args))))
+        , DatabasePort.onConnectionFailure (\args -> Msg.ForPort (PortMsg.ForDatabase (DatabaseMsg.ConnectionFailure args)))
+            -- , onConnectionFailure (\args -> Msg.ForPort (PortMsg.OnConnectionFailure args))
+            -- , readAllStrainsFailure (\args -> Msg.ForPort (PortMsg.OnReadAllStrainsFailure args))
+        ]

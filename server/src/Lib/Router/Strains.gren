@@ -1,0 +1,20 @@
+module Lib.Router.Strains exposing ( getAllStrains )
+
+import Lib.Ctx as Ctx
+import Lib.Model as Model
+import Lib.Port.Out
+import Lib.Port.Strains.ReadAll.Port as ReadAllStrainsPort
+import Lib.Pretty as Pretty
+import Lib.Subscribe as Subscribe
+import Lib.Updated as Updated
+
+
+getAllStrains : Model.T -> Pretty.Req -> Pretty.Res -> Updated.T
+getAllStrains initialModel req res =
+    let
+        { ctx, model } =
+            Model.storeRequest req res initialModel
+    in
+    { model = model
+    , command = ReadAllStrainsPort.get ctx
+    }
